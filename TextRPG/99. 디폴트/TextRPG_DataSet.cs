@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace TextRPG
 {
-    partial class TextRPG_DataSet
+    partial class TextRPG_DataSet                                                  // 데이터 저장, 불러오기를 관리하는 클래스 
     {
         public static void SaveData(TextRPG_Player player)
         {

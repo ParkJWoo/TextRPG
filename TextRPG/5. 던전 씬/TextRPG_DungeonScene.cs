@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-    partial class TextRPG_DungeonScene
+    partial class TextRPG_DungeonScene                                          //  던전 입장, 던전 기능을 관리하는 클래스
     {
         static public void EnterDungeonScene(TextRPG_Player player)
         {
