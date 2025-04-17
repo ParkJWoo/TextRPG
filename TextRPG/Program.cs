@@ -14,7 +14,8 @@ namespace TextRPG
 
         public enum MAIN_STATE                              //  시작 화면의 선택지 상태
         {
-            SCENE_STATUS = 1,
+            SCENE_QUIT= 0,
+            SCENE_STATUS,
             SCENE_INVENTORY,
             SCENE_SHOP,
             SCENE_BATTLE,
@@ -1008,7 +1009,7 @@ namespace TextRPG
         {
             while (true)
             {
-                Thread.Sleep(3000);                     //  콘솔창에서 다음 내용 실행 전 딜레이를 주는 함수 → 3초 후에 실행
+                Thread.Sleep(2000);                     //  콘솔창에서 다음 내용 실행 전 딜레이를 주는 함수 → 2초 후에 실행
                 Console.Clear();
 
                 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다");
@@ -1028,8 +1029,12 @@ namespace TextRPG
                 {
                     switch (choiceInput)
                     {
+                        case (byte)MAIN_STATE.SCENE_QUIT:
+                            Console.WriteLine("게임을 종료합니다!");
+                            return;
                         case (byte)MAIN_STATE.SCENE_STATUS:
                             Console.Clear();
+                            Console.WriteLine(player);
                             StatInfoScene(player);
                             BackStage(player);
                             break;
@@ -1050,7 +1055,8 @@ namespace TextRPG
                             SaveData(player);
                             break;
                         case (byte)MAIN_STATE.SCENE_LOADDATA:
-                            LoadData(player);
+                            LoadData();
+                            Console.WriteLine(player);
                             break;
                         default:
                             {
@@ -1104,7 +1110,7 @@ namespace TextRPG
             }
         }
 
-        public static void LoadData(Player player)
+        public static Player LoadData()
         {
             string playerData = "../../../PlayerData.json ";
 
@@ -1113,14 +1119,15 @@ namespace TextRPG
                 if(File.Exists(playerData))                                         //  playerData가 존재하면 해당 파일을 불러온다
                 {
                     string json = File.ReadAllText(playerData);
-                    player =  JsonConvert.DeserializeObject<Player>(json);
 
                     Console.WriteLine("playerData를 성공적으로 불러왔습니다!");
+
+                    return JsonConvert.DeserializeObject<Player>(json);
                 }
 
                 else                                                                // playerData가 존재하지 않는다면, 기본 데이터로 설정함
                 {
-                    player =  new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
+                    return new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
                 }
             }
 
@@ -1128,7 +1135,7 @@ namespace TextRPG
             {
                 Console.WriteLine($"Error Load Data: {ex.Message}");
 
-                player = new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
+                return new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
             }
         }
 
@@ -1136,7 +1143,7 @@ namespace TextRPG
         {
             //Player player = new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
 
-            Player player = new Player();
+            Player player = LoadData();
 
             StartScene(player);
         }

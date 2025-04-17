@@ -1,18 +1,54 @@
 {
-  "bLevel": 1,
+  "bLevel": 2,
   "strJob": "전사",
   "strName": "이세계 용사",
-  "fAttack": 10.0,
+  "fAttack": 10.5,
   "fAttackSum": 0.0,
-  "fDefense": 1.0,
-  "fDefenseSum": 0.0,
-  "fHp": 100.0,
+  "fDefense": 7.0,
+  "fDefenseSum": 5.0,
+  "fHp": 69.0,
   "fMaxHp": 100.0,
   "fHpSum": 0.0,
   "iExp": 0,
   "iGold": 10000,
-  "lstInventory": [],
+  "lstInventory": [
+    {
+      "eType": 1,
+      "strName": "수련자 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 5.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 1000,
+      "bIsPurchase": true,
+      "bIsWear": true
+    }
+  ],
   "lstEquip": [],
-  "lstEquipArmor": [],
-  "lstEquipWeapon": []
+  "lstEquipArmor": [
+    {
+      "eType": 1,
+      "strName": "수련자 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 5.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 1000,
+      "bIsPurchase": true,
+      "bIsWear": true
+    }
+  ],
+  "lstEquipWeapon": [
+    {
+      "eType": 1,
+      "strName": "수련자 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 5.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 1000,
+      "bIsPurchase": true,
+      "bIsWear": false
+    }
+  ]
 }
