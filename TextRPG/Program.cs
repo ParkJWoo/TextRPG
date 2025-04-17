@@ -2,28 +2,33 @@
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using static TextRPG.Program;
+using Newtonsoft.Json;
+using System.Security.Cryptography.X509Certificates;
+using System.Runtime.Serialization.Formatters.Binary;                          //  데이터 저장용
 
 namespace TextRPG
 {
     internal class Program
     {
-        public enum LOGO_STATE                              //  시작 화면의 선택지 상태
+        public static string path = $"..\\TextRPG\\TextRPG\\bin\\Debug\\net8.0\\JSon";            //  데이터 저장 파일 위치
+
+        public enum MAIN_STATE                              //  시작 화면의 선택지 상태
         {
             SCENE_STATUS = 1,
             SCENE_INVENTORY,
             SCENE_SHOP,
             SCENE_BATTLE,
-            SCENE_REST
+            SCENE_REST,
+            SCENE_SAVEDATA,
+            SCENE_LOADDATA
         }
-
-        public enum DUNGEON
+        public enum DUNGEON                                 //  던전 타입
         {
             DUNGEON_EASY = 1,
             DUNGEON_NORMAL,
             DUNGEON_HARD
         }
-
-        public enum ITEMTYPE
+        public enum ITEMTYPE                                //  아이템 타입 (방어구, 무기)
         {
             ITEM_WEAPON = 0,
             ITEM_ARMOR
@@ -59,9 +64,6 @@ namespace TextRPG
         {
             //  플레이어 클래스
 
-            //  플레이어 상태 구조체 선언 및 초기화
-            //CharacterStat characterStat = new CharacterStat(1, "전사", "이세계 용사", 10.0f, 5.0f, 100.0f, 0);
-
             public byte bLevel { get; set; }
             public string strJob { get; set; }
             public string strName { get; set; }
@@ -78,6 +80,27 @@ namespace TextRPG
             public List<Item> lstEquip { get; set; }
             public List<Item> lstEquipArmor { get; set; }
             public List<Item> lstEquipWeapon { get; set; }
+
+            public Player()
+            {
+                bLevel = 0;
+                strJob = string.Empty;
+                strName = string.Empty;
+                fAttack = 0.0f;
+                fDefense = 0.0f;
+                fHp = 0.0f;
+                fMaxHp = 100.0f;
+                iExp = 0;
+                iGold = 0;
+                lstInventory = new List<Item>();
+                lstEquipArmor = new List<Item>();
+                lstEquipWeapon = new List<Item>();
+                lstEquip = new List<Item>();
+
+                fAttackSum = 0.0f;
+                fDefenseSum = 0.0f;
+                fHpSum = 0.0f;
+            }
 
 
             public Player(byte level, string job, string name, float attack, float defense, float hp, int gold)      //  캐릭터 별 상태 정보를 원하는 수치로 입력, 입력한 값으로 초기화한다.
@@ -314,12 +337,6 @@ namespace TextRPG
 
                         else if(item.bIsWear)
                         {
-                            //Console.WriteLine($" {i}. [E] 아이템 이름: {item.strName} | 공격력: {item.fAttack} 증가 | 방어력: {item.fDefense} 증가 |" +
-                            //             $" 체력: {item.fHp} 증가");
-
-                            //i++;
-                            //Console.WriteLine();
-
                             Console.WriteLine($" {i}. 아이템 이름: {item.strName} | 공격력: {item.fAttack} 증가 | 방어력: {item.fDefense} 증가 |" +
                                               $" 체력: {item.fHp} 증가");
 
@@ -350,33 +367,10 @@ namespace TextRPG
                             Console.WriteLine();
                         }
                     }
-                   
-
-                    //else if (item.bIsWear)
-                    //{
-                    //    if(player.lstEquipArmor.Count != 0)
-                    //    {
-                    //        Console.WriteLine($" {i}. [E] 아이템 이름: {item.strName} | 공격력: {item.fAttack} 증가 | 방어력: {item.fDefense} 증가 |" +
-                    //                      $" 체력: {item.fHp} 증가");
-
-                    //        i++;
-                    //        Console.WriteLine();
-                    //    }
-
-                    //    else if(player.lstEquipArmor.Count == 0)
-                    //    {
-                    //        Console.WriteLine($" {i}. 아이템 이름: {item.strName} | 공격력: {item.fAttack} 증가 | 방어력: {item.fDefense} 증가 |" +
-                    //                     $" 체력: {item.fHp} 증가");
-
-                    //        i++;
-                    //        Console.WriteLine();
-                    //    }
-                    //}
                 }
             }
 
             Console.WriteLine("========================================================");
-
 
             while (true)
             {
@@ -472,18 +466,9 @@ namespace TextRPG
                             Console.ReadKey();
                         }
                     }
-
-                    //else
-                    //{
-                    //    Console.WriteLine("잘못된 입력입니다. 아무 키나 누르면 돌아갑니다");
-                    //    Console.ReadKey();
-                    //}
                 }
-
-                
             }
         }
-        
 
         static public void ShopScene(Player player)            //  플레이어의 인벤토리를 명시하는 정보 창
         {
@@ -756,6 +741,7 @@ namespace TextRPG
             int iRewardGold = 0;                                //  골드 보상
             int iBonusRewardGold = 0;                           //  골드 추가 보상
             float fBonusRewardPercent = 0.0f;                   //  골드 추가 보상 확률
+            int iClearRatio = 0;                                //  클리어 확률
             int iRewardExp = 0;                                 //  경험치 보상
 
             while(true)
@@ -768,6 +754,9 @@ namespace TextRPG
 
                     fRandomDamage = new Random().Next(20 + (int)(fRecommendDef - player.fDefense), 35 + (int)(fRecommendDef - player.fDefense));    //  랜덤 대미지 설정
                     fBonusRewardPercent = new Random().Next((int)player.fAttack, (int)player.fAttack * 2);
+
+                    iClearRatio = new Random().Next(1, 11);
+
 
                     iRewardGold = iRewardGold + iBonusRewardGold;
 
@@ -794,7 +783,7 @@ namespace TextRPG
                     {
                         fRandomDamage = new Random().Next(20 + (int)(fRecommendDef - player.fDefense), 35 + (int)(fRecommendDef - player.fDefense));
 
-                        if (new Random().NextDouble() < 0.4)
+                        if (iClearRatio < 4)
                         {
                             Console.WriteLine("클리어 실패...");
                             Console.WriteLine();
@@ -803,7 +792,7 @@ namespace TextRPG
                             break;
                         }
 
-                        else if (new Random().NextDouble() >= 0.6)
+                        else if (iClearRatio >= 6)
                         {
                             iBonusRewardGold += (int)(iRewardGold * fBonusRewardPercent);
 
@@ -834,6 +823,8 @@ namespace TextRPG
                     fRandomDamage = new Random().Next(20 + (int)(fRecommendDef - player.fDefense), 35 + (int)(fRecommendDef - player.fDefense));    //  랜덤 대미지 설정
                     fBonusRewardPercent = new Random().Next((int)player.fAttack, (int)player.fAttack * 2);
 
+                    iClearRatio = new Random().Next(1, 11);
+
                     iRewardGold = iRewardGold + iBonusRewardGold;
 
                     if (player.fDefense >= fRecommendDef)
@@ -855,7 +846,7 @@ namespace TextRPG
                     {
                         fRandomDamage = new Random().Next(20 + (int)(fRecommendDef - player.fDefense), 35 + (int)(fRecommendDef - player.fDefense));
 
-                        if (new Random().NextDouble() < 0.4)
+                        if (iClearRatio < 4)
                         {
                             Console.WriteLine("클리어 실패...");
                             Console.WriteLine();
@@ -864,7 +855,7 @@ namespace TextRPG
                             break;
                         }
 
-                        else if (new Random().NextDouble() >= 0.6)
+                        else if (iClearRatio >= 6)
                         {
                             iBonusRewardGold += (int)(iRewardGold * fBonusRewardPercent);
 
@@ -894,6 +885,8 @@ namespace TextRPG
                     fRandomDamage = new Random().Next(20 + (int)(fRecommendDef - player.fDefense), 35 + (int)(fRecommendDef - player.fDefense));    //  랜덤 대미지 설정
                     fBonusRewardPercent = new Random().Next((int)player.fAttack, (int)player.fAttack * 2);
 
+                    iClearRatio = new Random().Next(1,11);
+
                     iRewardGold = iRewardGold + iBonusRewardGold;
 
                     if (player.fDefense >= fRecommendDef)
@@ -911,7 +904,7 @@ namespace TextRPG
 
                     else
                     {
-                        if (new Random().NextDouble() < 0.4)
+                        if (iClearRatio < 4)
                         {
                             Console.WriteLine("클리어 실패...");
                             Console.WriteLine();
@@ -920,7 +913,7 @@ namespace TextRPG
                             break;
                         }
 
-                        else if (new Random().NextDouble() >= 0.6)
+                        else if (iClearRatio >= 6)
                         {
                             iBonusRewardGold += (int)(iRewardGold * fBonusRewardPercent);
 
@@ -946,8 +939,6 @@ namespace TextRPG
                     EnterDungeonScene(player);
                 }
             }
-            
-
         }
 
         static public void RestScene(Player player)
@@ -1006,7 +997,8 @@ namespace TextRPG
                 else
                 {
                     Console.WriteLine("잘못된 입력입니다. 아무 키나 누르면 돌아갑니다");
-                    Console.ReadKey();
+                    Thread.Sleep(2000);
+                    //Console.ReadKey();
                 }   
             }
             
@@ -1014,9 +1006,9 @@ namespace TextRPG
 
         static public void StartScene(Player player)
         {
-
             while (true)
             {
+                Thread.Sleep(3000);                     //  콘솔창에서 다음 내용 실행 전 딜레이를 주는 함수 → 3초 후에 실행
                 Console.Clear();
 
                 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다");
@@ -1027,6 +1019,8 @@ namespace TextRPG
                 Console.WriteLine($"3. 상점 가기");
                 Console.WriteLine($"4. 던전 입장");
                 Console.WriteLine($"5. 휴식하기");
+                Console.WriteLine($"6. 저장하기");
+                Console.WriteLine($"7. 불러오기");
 
                 Console.Write("원하시는 행동을 입력해주세요! >> ");
 
@@ -1034,23 +1028,29 @@ namespace TextRPG
                 {
                     switch (choiceInput)
                     {
-                        case (byte)LOGO_STATE.SCENE_STATUS:
+                        case (byte)MAIN_STATE.SCENE_STATUS:
                             Console.Clear();
                             StatInfoScene(player);
                             BackStage(player);
                             break;
-                        case (byte)LOGO_STATE.SCENE_INVENTORY:
+                        case (byte)MAIN_STATE.SCENE_INVENTORY:
                             Console.Clear();
                             InventoryScene(player);
                             break;
-                        case (byte)LOGO_STATE.SCENE_SHOP:
+                        case (byte)MAIN_STATE.SCENE_SHOP:
                             ShopScene(player);
                             break;
-                        case (byte)LOGO_STATE.SCENE_BATTLE:
+                        case (byte)MAIN_STATE.SCENE_BATTLE:
                             EnterDungeonScene(player);
                             break;
-                        case (byte)LOGO_STATE.SCENE_REST:
+                        case (byte)MAIN_STATE.SCENE_REST:
                             RestScene(player);
+                            break;
+                        case (byte)MAIN_STATE.SCENE_SAVEDATA:
+                            SaveData(player);
+                            break;
+                        case (byte)MAIN_STATE.SCENE_LOADDATA:
+                            LoadData(player);
                             break;
                         default:
                             {
@@ -1062,8 +1062,6 @@ namespace TextRPG
                 }
             }
         }
-
-       
 
         static public void BackStage(Player player)
         {
@@ -1087,9 +1085,58 @@ namespace TextRPG
             }
         }
 
+        public static void SaveData(Player player)
+        {
+            string playerData = "../../../PlayerData.json ";                       //  데이터 저장 파일 경로 설정
+
+            try
+            {
+                string json = JsonConvert.SerializeObject(player, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(playerData, json);
+
+                Console.WriteLine("데이터가 저장되었습니다!");
+                Console.WriteLine(playerData);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error Saving Data: {ex.Message}");
+            }
+        }
+
+        public static void LoadData(Player player)
+        {
+            string playerData = "../../../PlayerData.json ";
+
+            try
+            {
+                if(File.Exists(playerData))                                         //  playerData가 존재하면 해당 파일을 불러온다
+                {
+                    string json = File.ReadAllText(playerData);
+                    player =  JsonConvert.DeserializeObject<Player>(json);
+
+                    Console.WriteLine("playerData를 성공적으로 불러왔습니다!");
+                }
+
+                else                                                                // playerData가 존재하지 않는다면, 기본 데이터로 설정함
+                {
+                    player =  new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
+                }
+            }
+
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error Load Data: {ex.Message}");
+
+                player = new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
+            }
+        }
+
         static void Main(string[] args)
         {
-            Player player = new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 0);
+            //Player player = new Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
+
+            Player player = new Player();
 
             StartScene(player);
         }

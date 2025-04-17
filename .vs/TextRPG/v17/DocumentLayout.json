@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{D11BF567-6272-47D9-B78C-A6AA299AD3B3}|TextRPG\\TextRPG.csproj|c:\\users\\pc\\desktop\\textrpg\\textrpg\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D11BF567-6272-47D9-B78C-A6AA299AD3B3}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D11BF567-6272-47D9-B78C-A6AA299AD3B3}|TextRPG\\TextRPG.csproj|c:\\users\\pc\\desktop\\textrpg\\textrpg\\playerdata.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D11BF567-6272-47D9-B78C-A6AA299AD3B3}|TextRPG\\TextRPG.csproj|solutionrelative:textrpg\\playerdata.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -24,9 +28,23 @@
               "RelativeDocumentMoniker": "TextRPG\\Program.cs",
               "ToolTip": "C:\\Users\\PC\\Desktop\\TextRPG\\TextRPG\\Program.cs",
               "RelativeToolTip": "TextRPG\\Program.cs",
-              "ViewState": "AgIAAPMCAAAAAAAAAAAAwAsDAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAACUEAAAAAAAAAAAswCkEAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-15T07:34:13.126Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PlayerData.json",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\TextRPG\\TextRPG\\PlayerData.json",
+              "RelativeDocumentMoniker": "TextRPG\\PlayerData.json",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\TextRPG\\TextRPG\\PlayerData.json",
+              "RelativeToolTip": "TextRPG\\PlayerData.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-17T01:11:43.498Z",
               "EditorCaption": ""
             }
           ]

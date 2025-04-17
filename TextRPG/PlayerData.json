@@ -1,0 +1,18 @@
+{
+  "bLevel": 1,
+  "strJob": "전사",
+  "strName": "이세계 용사",
+  "fAttack": 10.0,
+  "fAttackSum": 0.0,
+  "fDefense": 1.0,
+  "fDefenseSum": 0.0,
+  "fHp": 100.0,
+  "fMaxHp": 100.0,
+  "fHpSum": 0.0,
+  "iExp": 0,
+  "iGold": 10000,
+  "lstInventory": [],
+  "lstEquip": [],
+  "lstEquipArmor": [],
+  "lstEquipWeapon": []
+}
