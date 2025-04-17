@@ -1,17 +1,39 @@
 {
-  "bLevel": 2,
+  "bLevel": 3,
   "strJob": "전사",
   "strName": "이세계 용사",
-  "fAttack": 10.5,
+  "fAttack": 11.0,
   "fAttackSum": 0.0,
-  "fDefense": 7.0,
-  "fDefenseSum": 5.0,
-  "fHp": 69.0,
+  "fDefense": 12.0,
+  "fDefenseSum": 9.0,
+  "fHp": 74.0,
   "fMaxHp": 100.0,
   "fHpSum": 0.0,
-  "iExp": 0,
-  "iGold": 10000,
+  "iExp": 10,
+  "iGold": 10850,
   "lstInventory": [
+    {
+      "eType": 1,
+      "strName": "무쇠 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 9.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 1000,
+      "bIsPurchase": true,
+      "bIsWear": true
+    },
+    {
+      "eType": 1,
+      "strName": "스파르타의 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 15.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 3500,
+      "bIsPurchase": true,
+      "bIsWear": false
+    },
     {
       "eType": 1,
       "strName": "수련자 갑옷",
@@ -21,21 +43,43 @@
       "fMaxHp": 100.0,
       "iPrice": 1000,
       "bIsPurchase": true,
-      "bIsWear": true
+      "bIsWear": false
     }
   ],
   "lstEquip": [],
   "lstEquipArmor": [
     {
       "eType": 1,
-      "strName": "수련자 갑옷",
+      "strName": "무쇠 갑옷",
       "fAttack": 0.0,
-      "fDefense": 5.0,
+      "fDefense": 9.0,
       "fHp": 0.0,
       "fMaxHp": 100.0,
       "iPrice": 1000,
       "bIsPurchase": true,
       "bIsWear": true
+    },
+    {
+      "eType": 1,
+      "strName": "스파르타의 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 15.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 3500,
+      "bIsPurchase": true,
+      "bIsWear": false
+    },
+    {
+      "eType": 1,
+      "strName": "스파르타의 갑옷",
+      "fAttack": 0.0,
+      "fDefense": 15.0,
+      "fHp": 0.0,
+      "fMaxHp": 100.0,
+      "iPrice": 3500,
+      "bIsPurchase": true,
+      "bIsWear": false
     }
   ],
   "lstEquipWeapon": [

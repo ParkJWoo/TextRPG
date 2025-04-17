@@ -160,13 +160,15 @@ namespace TextRPG
                 {
                     if (int.TryParse(Console.ReadLine(), out int wearInput) && wearInput >= 0 && wearInput <= player.lstInventory.Count)
                     {
-                        if (wearInput == 0)                      //  0을 눌렀을 경우, 이전 씬(상점 씬)으로 이동
+                        //  0을 눌렀을 경우, 이전 씬(상점 씬)으로 이동
+                        if (wearInput == 0)                      
                         {
                             InventoryScene(player);
                             break;
                         }
 
-                        else                                    //  0이 아닌 숫자를 눌렀을 경우, 해당 숫자의 아이템을 장착
+                        //  0이 아닌 숫자를 눌렀을 경우, 해당 숫자의 아이템을 장착
+                        else
                         {
                             TextRPG_Item wearableItem = player.lstInventory[wearInput - 1];
 
