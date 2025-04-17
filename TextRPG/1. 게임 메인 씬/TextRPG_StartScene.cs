@@ -25,6 +25,7 @@ namespace TextRPG
                 Console.WriteLine($"5. 휴식하기");
                 Console.WriteLine($"6. 저장하기");
                 Console.WriteLine($"7. 불러오기");
+                Console.WriteLine($"0. 나가기");
 
                 Console.Write("원하시는 행동을 입력해주세요! >> ");
 
@@ -37,7 +38,6 @@ namespace TextRPG
                             return;
                         case (byte)TextRPG_Enum.MAIN_STATE.SCENE_STATUS:
                             Console.Clear();
-                            Console.WriteLine(player);
                             TextRPG_StatInfoScene.StatInfoScene(player);
                             BackStage(player);
                             break;
@@ -63,9 +63,8 @@ namespace TextRPG
                             break;
                         default:
                             {
-                                Console.Clear();
                                 Console.WriteLine("잘못된 입력값입니다. 숫자를 다시 입력해주세요!");
-                                return;
+                                break;
                             }
                     }
                 }

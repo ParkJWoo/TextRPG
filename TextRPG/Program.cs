@@ -12,9 +12,9 @@ namespace TextRPG
     {
         static void Main(string[] args)
         {
-            TextRPG_Player player = TextRPG_DataSet.LoadData();
+            TextRPG_Player player = TextRPG_DataSet.LoadData();         //  저장되어 있는 플레이어 데이터를 불러온다.
 
-            TextRPG_StartScene.StartScene(player);
+            TextRPG_StartScene.StartScene(player);                      //  불러온 데이터를 기반을 메인 씬에 입장
         }
     }
 }

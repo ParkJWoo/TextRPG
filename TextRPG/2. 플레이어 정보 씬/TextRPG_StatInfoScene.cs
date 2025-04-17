@@ -10,7 +10,7 @@ namespace TextRPG
     {
         static public void StatInfoScene(TextRPG_Player player)            //  플레이어의 스탯 정보를 명시하는 정보 창
         {
-            if (player.lstInventory.Count == 0)
+            if (player.lstInventory.Count == 0)                            //   만약, 플레이어 인벤토리에 아이템이 1개도 없을 경우 출력되는 스탯 창
             {
                 Console.WriteLine("===============[플레이어 스탯창]===============");
                 Console.WriteLine($"Lv. {player.bLevel}");
@@ -26,7 +26,7 @@ namespace TextRPG
                 Console.WriteLine();
             }
 
-            else
+            else                                                           //   플레이어 인벤토리에 아이템이 1개 이상 있을 경우 출력되는 스탯 창
             {
                 Console.WriteLine("===============[플레이어 스탯창]===============");
                 Console.WriteLine($"Lv. {player.bLevel}");

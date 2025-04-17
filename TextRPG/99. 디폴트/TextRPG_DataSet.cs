@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Newtonsoft.Json;                                                             // 데이터 저장, 불러오기를 사용하기 위한 네임 스페이스 선언
 
 namespace TextRPG
 {
@@ -11,7 +11,8 @@ namespace TextRPG
     {
         public static void SaveData(TextRPG_Player player)
         {
-            string playerData = "../../../PlayerData.json ";                       //  데이터 저장 파일 경로 설정
+            //  데이터 저장 파일 경로 설정 → 상대 경로로 지정
+            string playerData = "../../../PlayerData.json ";                       
 
             try
             {
@@ -28,13 +29,14 @@ namespace TextRPG
             }
         }
 
-        public static TextRPG_Player LoadData()                                             //  저장된 playerData 데이터 불러오는 함수
+        public static TextRPG_Player LoadData()                                       //  저장된 playerData 데이터 불러오는 함수
         {
             string playerData = "../../../PlayerData.json ";
 
             try
             {
-                if (File.Exists(playerData))                                         //  playerData가 존재하면 해당 파일을 불러온다
+                //  playerData가 존재하면 해당 파일을 불러온다
+                if (File.Exists(playerData))                                        
                 {
                     string json = File.ReadAllText(playerData);
 
@@ -43,7 +45,8 @@ namespace TextRPG
                     return JsonConvert.DeserializeObject<TextRPG_Player>(json);
                 }
 
-                else                                                                // playerData가 존재하지 않는다면, 기본 데이터로 설정함
+                // playerData가 존재하지 않는다면, 임의로 설정한 기본 데이터를 적용.
+                else
                 {
                     return new TextRPG_Player(1, "전사", "이세계 용사", 10.0f, 1.0f, 100.0f, 10000);
                 }

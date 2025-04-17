@@ -9,7 +9,8 @@ namespace TextRPG
 {
     partial class TextRPG_Enum
     {
-        public enum MAIN_STATE                              //  시작 화면의 선택지 상태
+        //  시작 화면의 선택지 상태
+        public enum MAIN_STATE                              
         {
             SCENE_QUIT = 0,
             SCENE_STATUS,
@@ -20,13 +21,17 @@ namespace TextRPG
             SCENE_SAVEDATA,
             SCENE_LOADDATA
         }
-        public enum DUNGEON                                 //  던전 타입
+
+        //  던전 타입
+        public enum DUNGEON                                 
         {
             DUNGEON_EASY = 1,
             DUNGEON_NORMAL,
             DUNGEON_HARD
         }
-        public enum ITEMTYPE                                //  아이템 타입 (방어구, 무기)
+
+        //  아이템 타입 (방어구, 무기)
+        public enum ITEMTYPE                                
         {
             ITEM_WEAPON = 0,
             ITEM_ARMOR

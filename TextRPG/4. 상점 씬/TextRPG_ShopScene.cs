@@ -8,7 +8,7 @@ namespace TextRPG
 {
     partial class TextRPG_ShopScene
     {
-        static public void ShopScene(TextRPG_Player player)            //  플레이어의 인벤토리를 명시하는 정보 창
+        static public void ShopScene(TextRPG_Player player)            //  상점 → 판매하는 아이템을 명시하는 화면
         {
             Console.Clear();
 
@@ -21,6 +21,7 @@ namespace TextRPG
             Console.WriteLine("=============================================");
             Console.WriteLine();
 
+            //  상점에 진열될 판매 아이템 리스트 생성
             List<TextRPG_Item> itemList = new List<TextRPG_Item>()
             {
                 new TextRPG_Item(TextRPG_Enum.ITEMTYPE.ITEM_ARMOR, "수련자 갑옷", 0.0f, 5.0f, 0.0f,1000,false),
@@ -35,6 +36,7 @@ namespace TextRPG
             Console.WriteLine("[아이템 목록]");
             Console.WriteLine();
 
+            //  판매 아이템 리스트 출력
             for (int i = 0; i < itemList.Count; i++)
             {
                 Console.WriteLine($"{i + 1}. 아이템 이름: {itemList[i].strName} | 가격: {itemList[i].iPrice} | 공격력: {itemList[i].fAttack} 증가 | 방어력: {itemList[i].fDefense} 증가 |" +
@@ -45,6 +47,7 @@ namespace TextRPG
 
             Console.WriteLine("===============================================");
 
+            //  모든 판매 아이템의 구매했는지를 체크하는 변수를 false로 초기화한다.
             foreach (var item in itemList)
             {
                 item.bIsPurchase = false;
@@ -61,18 +64,21 @@ namespace TextRPG
             {
                 if (int.TryParse(Console.ReadLine(), out int shopInput))
                 {
+                    //  0을 눌렀을 때, 메인 화면으로 이동
                     if (shopInput == 0)
                     {
                         TextRPG_StartScene.StartScene(player);
                         break;
                     }
 
+                    //  1을 눌렀을 때, 구매 화면으로 이동
                     else if (shopInput == 1)
                     {
                         PurchaseItem(itemList, player);
                         break;
                     }
 
+                    //  2를 눌렀을 때, 판매 화면으로 이동
                     else if (shopInput == 2)
                     {
                         SellScene(player);
@@ -87,7 +93,7 @@ namespace TextRPG
             }
         }
 
-        static void PurchaseItem(List<TextRPG_Item> itemList, TextRPG_Player player)
+        static void PurchaseItem(List<TextRPG_Item> itemList, TextRPG_Player player)                //  상점 → 아이템 구매 화면
         {
             while (true)
             {
@@ -102,6 +108,7 @@ namespace TextRPG
                 Console.WriteLine("====================================================");
                 Console.WriteLine();
 
+                //  아이템 목록 출력
                 Console.WriteLine("[아이템 목록]");
 
                 for (int i = 0; i < itemList.Count; i++)
@@ -123,21 +130,25 @@ namespace TextRPG
 
                 if (int.TryParse(Console.ReadLine(), out int itemInput) && itemInput >= 0 && itemInput <= itemList.Count)
                 {
-                    if (itemInput == 0)                      //  0을 눌렀을 경우, 이전 씬(상점 씬)으로 이동
+                    //  0을 눌렀을 경우, 이전 씬(상점 씬)으로 이동
+                    if (itemInput == 0)                      
                     {
                         ShopScene(player);
                         break;
                     }
 
-                    else                                    //  0이 아닌 숫자를 눌렀을 경우, 해당 숫자의 아이템을 구매
+                    //  0이 아닌 숫자를 눌렀을 경우, 해당 숫자의 아이템을 구매
+                    else
                     {
                         TextRPG_Item puschaseItem = itemList[itemInput - 1];
 
+                        //  이미 구매한 아이템일 경우, 해당 아이템을 구매하지 못한다.
                         if (puschaseItem.bIsPurchase)
                         {
                             Console.WriteLine("이미 구매한 아이템입니다!");
                         }
 
+                        //  구매하지 않은 아이템의 경우, 유저가 보유한 골드에서 해당 아이템에 설정된 가격만큼 차감한 후, 구매했음을 체크하는 boo값 변수를 true로 바꾼다.
                         else if (player.iGold >= puschaseItem.iPrice)
                         {
                             Console.WriteLine("구매를 완료했습니다!");
@@ -146,6 +157,7 @@ namespace TextRPG
                             player.lstInventory.Add(puschaseItem);
                         }
 
+                        //  플레이어가 보유한 골드가 구매하고자 하는 아이템의 가격보다 낮을 경우, 골드가 부족하다는 문구 출력 및 구매 불가 처리
                         else
                         {
                             Console.WriteLine("골드가 부족합니다");
@@ -164,7 +176,7 @@ namespace TextRPG
             }
         }
 
-        static public void SellScene(TextRPG_Player player)
+        static public void SellScene(TextRPG_Player player)             //  상점 → 유저가 보유한 아이템을 판매하는 화면
         {
             while (true)
             {
@@ -182,6 +194,7 @@ namespace TextRPG
                 Console.WriteLine("[보유 아이템 목록]");
                 Console.WriteLine();
 
+                //  유저의 인벤토리 리스트를 출력
                 for (int i = 0; i < player.lstInventory.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. 아이템 이름: {player.lstInventory[i].strName} | 가격: {player.lstInventory[i].iPrice} | 공격력: {player.lstInventory[i].fAttack} 증가 | 방어력: {player.lstInventory[i].fDefense} 증가 |" +
@@ -201,22 +214,32 @@ namespace TextRPG
 
                 if (int.TryParse(Console.ReadLine(), out int itemInput) && itemInput >= 0 && itemInput <= player.lstInventory.Count)
                 {
-                    if (itemInput == 0)                                        //  0을 눌렀을 경우, 이전 씬(상점 씬)으로 이동
+                    //  0을 눌렀을 경우, 이전 씬(상점 씬)으로 이동
+                    if (itemInput == 0)                                        
                     {
                         ShopScene(player);
                         break;
                     }
 
-                    else if (itemInput != 0)                                    //  0이 아닌 숫자를 눌렀을 경우, 해당 숫자의 아이템을 판매
+                    //  0이 아닌 숫자를 눌렀을 경우, 해당 숫자의 아이템을 판매
+                    else if (itemInput != 0)                                    
                     {
                         TextRPG_Item sellItem = player.lstInventory[itemInput - 1];
 
                         Console.WriteLine("판매를 완료했습니다!");
+
+                        //  판매하고자 하는 아이템의 85% 만큼의 골드를 획득
                         player.iGold += (int)(sellItem.iPrice * 0.85f);
+
+                        //  구매 여부를 확인하는 bool값 변수를 true → false로 변경
                         sellItem.bIsPurchase = false;
+
+                        //  플레이어의 인벤토리 리스트에 해당 아이템을 제거
                         player.lstInventory.Remove(sellItem);
+
                         player.lstEquip.Remove(sellItem);
 
+                        //  만약 판매하고자 하는 아이템이 장착한 아이템일 경우, 해당 아이템을 장착 해제 상태로 전환
                         if (sellItem.bIsWear == true)
                         {
                             player.UnequipItem(sellItem);

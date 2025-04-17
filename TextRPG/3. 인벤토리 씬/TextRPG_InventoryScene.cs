@@ -22,7 +22,7 @@ namespace TextRPG
             Console.WriteLine();
 
 
-            if (player.lstInventory.Count == 0)
+            if (player.lstInventory.Count == 0)                             //  인벤토리에 아이템이 하나라도 없을 경우 출력
             {
                 Console.WriteLine("===============================================");
                 Console.WriteLine();
@@ -31,8 +31,8 @@ namespace TextRPG
                 Console.WriteLine("===============================================");
             }
 
-            else
-            {
+            else                                                             // 인벤토리에 아이템이 1개 이상 있을 경우, 인벤토리 리스트에 들어있는 아이템들의 정보를 순차적으로 출력
+            {       
                 Console.WriteLine("=============== [보유 중인 아이템 목록] ===============");
 
                 Console.WriteLine();
@@ -41,7 +41,7 @@ namespace TextRPG
 
                 foreach (var item in player.lstInventory)
                 {
-                    if (player.lstEquipArmor.Count == 0 || player.lstEquipWeapon.Count == 0)
+                    if (player.lstEquipArmor.Count == 0 || player.lstEquipWeapon.Count == 0)         // 장비 인벤토리 리스트에 아이템이 없을 경우
                     {
                         if (!item.bIsWear)
                         {
@@ -65,7 +65,7 @@ namespace TextRPG
                         }
                     }
 
-                    else if (player.lstEquipArmor.Count != 0)
+                    else if (player.lstEquipArmor.Count != 0)                                           // 장비 인벤토리 리스트에 아이템이 1개 이상 있을 경우
                     {
                         if (!item.bIsWear)
                         {
@@ -116,7 +116,7 @@ namespace TextRPG
             }
         }
 
-        static public void WearScene(TextRPG_Player player)
+        static public void WearScene(TextRPG_Player player)                             //  인벤토리에 있는 아이템 장착 관리
         {
             Console.Clear();
 
